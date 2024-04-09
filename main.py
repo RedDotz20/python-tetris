@@ -119,13 +119,13 @@ def clear_rows(grid, locked):
 
     return inc
 
-def draw_next_shapes(next_shape, surface):
+def draw_next_shapes(next_shapes, surface):
     font = pygame.font.SysFont('comicsans', 30)
     label = font.render('Next Shape', 1, (255, 255, 255))
     sx = TOP_LEFT_X + PLAY_WIDTH + 50
     sy = TOP_LEFT_Y + PLAY_HEIGHT / 2 - 100
 
-    for k, shape in enumerate(next_shape):
+    for k, shape in enumerate(next_shapes):
         formatted = shape.shape[shape.rotation % len(shape.shape)]
 
         for i, line in enumerate(formatted):
@@ -139,6 +139,7 @@ def draw_next_shapes(next_shape, surface):
                         BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE), 0
                     )
     surface.blit(label, (sx + 10, sy - 30))
+
 
 def update_score(nscore):
     score = max_score()
@@ -200,7 +201,7 @@ def main(win):
     change_piece = False
     run = True
     current_piece = get_shape()
-    next_piece = get_shape()
+    next_pieces = [get_shape(), get_shape()]  # Get the next two pieces
     clock = pygame.time.Clock()
     fall_time = 0
     fall_speed = 0.27
@@ -280,13 +281,13 @@ def main(win):
             for pos in shape_pos:
                 p = (pos[0], pos[1])
                 locked_positions[p] = current_piece.color
-            current_piece = next_piece
-            next_piece = get_shape()
+            current_piece = next_pieces.pop(0)  # Get the next piece from the list
+            next_pieces.append(get_shape())  # Add a new piece to the end of the list
             change_piece = False
             score += clear_rows(grid, locked_positions) * 10
 
         draw_window(win, grid, score, last_score)
-        draw_next_shapes([current_piece, next_piece], win)
+        draw_next_shapes(next_pieces, win)  # Pass the list of next pieces
         if pause:
             draw_modal(win)
         pygame.display.update()
@@ -297,7 +298,6 @@ def main(win):
             pygame.time.delay(1500)
             run = False
             update_score(score)
-
 
 def main_menu(win):
     run = True
