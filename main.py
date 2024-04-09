@@ -148,13 +148,11 @@ def update_score(nscore):
         else:
             f.write(str(nscore))
 
-
 def max_score():
     with open('scores.txt', 'r', encoding="utf-8") as f:
         lines = f.readlines()
         score = lines[0].strip()
     return score
-
 
 def draw_window(surface, grid, score=0, last_score=0):
     surface.fill((0, 0, 0))
@@ -187,6 +185,14 @@ def draw_window(surface, grid, score=0, last_score=0):
     draw_grid(surface, grid)
 
 
+def draw_modal(surface):
+    pygame.draw.rect(surface, (0, 0, 0), (TOP_LEFT_X + 50, TOP_LEFT_Y + 200, 200, 200))
+    font = pygame.font.SysFont('comicsans', 30)
+    resume_label = font.render('Resume', 1, (255, 255, 255))
+    restart_label = font.render('Restart', 1, (255, 255, 255))
+    surface.blit(resume_label, (TOP_LEFT_X + 100, TOP_LEFT_Y + 250))
+    surface.blit(restart_label, (TOP_LEFT_X + 100, TOP_LEFT_Y + 320))
+
 def main(win):
     last_score = max_score()
     locked_positions = {}
@@ -200,6 +206,8 @@ def main(win):
     fall_speed = 0.27
     level_time = 0
     score = 0
+    pause = False
+    modal_open = False
 
     while run:
         grid = create_grid(locked_positions)
@@ -214,10 +222,11 @@ def main(win):
 
         if fall_time / 1000 > fall_speed:
             fall_time = 0
-            current_piece.y += 1
-            if not (valid_space(current_piece, grid)) and current_piece.y > 0:
-                current_piece.y -= 1
-                change_piece = True
+            if not pause:
+                current_piece.y += 1
+                if not (valid_space(current_piece, grid)) and current_piece.y > 0:
+                    current_piece.y -= 1
+                    change_piece = True
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -225,27 +234,41 @@ def main(win):
                 pygame.display.quit()
 
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_LEFT:
+                if event.key == pygame.K_ESCAPE:
+                    pause = not pause
+                    modal_open = pause
+                if event.key == pygame.K_LEFT and not pause:
                     current_piece.x -= 1
                     if not valid_space(current_piece, grid):
                         current_piece.x += 1
-                if event.key == pygame.K_RIGHT:
+                if event.key == pygame.K_RIGHT and not pause:
                     current_piece.x += 1
                     if not valid_space(current_piece, grid):
                         current_piece.x -= 1
-                if event.key == pygame.K_DOWN:
+                if event.key == pygame.K_DOWN and not pause:
                     current_piece.y += 1
                     if not valid_space(current_piece, grid):
                         current_piece.y -= 1
-                if event.key == pygame.K_UP:
+                if event.key == pygame.K_UP and not pause:
                     current_piece.rotation += 1
                     if not valid_space(current_piece, grid):
                         current_piece.rotation -= 1
-                if event.key == pygame.K_SPACE:
+                if event.key == pygame.K_SPACE and not pause:
                     while valid_space(current_piece, grid):
                         current_piece.y += 1
                     current_piece.y -= 1
                     change_piece = True
+                if event.key == pygame.K_r and modal_open:
+                    main_menu(win)
+
+            if event.type == pygame.MOUSEBUTTONDOWN and modal_open:
+                mouse_x, mouse_y = pygame.mouse.get_pos()
+                if TOP_LEFT_X + 50 < mouse_x < TOP_LEFT_X + 250:
+                    if TOP_LEFT_Y + 250 < mouse_y < TOP_LEFT_Y + 290:
+                        pause = False
+                        modal_open = False
+                    elif TOP_LEFT_Y + 320 < mouse_y < TOP_LEFT_Y + 360:
+                        main_menu(win)
 
         shape_pos = convert_shape_format(current_piece)
 
@@ -264,6 +287,8 @@ def main(win):
 
         draw_window(win, grid, score, last_score)
         draw_next_shapes([current_piece, next_piece], win)
+        if pause:
+            draw_modal(win)
         pygame.display.update()
 
         if check_lost(locked_positions):
@@ -289,5 +314,5 @@ def main_menu(win):
 
 
 window = pygame.display.set_mode((S_WIDTH, S_HEIGHT))
-pygame.display.set_caption('Tetris')
+pygame.display.set_caption('PYTHON TETRIS')
 main_menu(window)
