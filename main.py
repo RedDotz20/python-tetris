@@ -1,17 +1,10 @@
 import random
 import pygame
 from src.constants import shapes, shape_colors
+from src.variables import (
+    S_WIDTH, S_HEIGHT, PLAY_WIDTH, PLAY_HEIGHT, BLOCK_SIZE, TOP_LEFT_X, TOP_LEFT_Y)
 
 pygame.font.init()
-
-# Global variables
-S_WIDTH = 800
-S_HEIGHT = 700
-PLAY_WIDTH = 300
-PLAY_HEIGHT = 600
-BLOCK_SIZE = 30
-TOP_LEFT_X = (S_WIDTH - PLAY_WIDTH) // 2
-TOP_LEFT_Y = S_HEIGHT - PLAY_HEIGHT
 
 class Piece:
     def __init__(self, x, y, shape):
@@ -140,7 +133,6 @@ def draw_next_shapes(next_shapes, surface):
                     )
     surface.blit(label, (sx + 10, sy - 30))
 
-
 def update_score(nscore):
     score = max_score()
     with open('scores.txt', 'w', encoding="utf=8") as f:
@@ -193,6 +185,20 @@ def draw_modal(surface):
     restart_label = font.render('Restart', 1, (255, 255, 255))
     surface.blit(resume_label, (TOP_LEFT_X + 100, TOP_LEFT_Y + 250))
     surface.blit(restart_label, (TOP_LEFT_X + 100, TOP_LEFT_Y + 320))
+
+def main_menu(win):
+    run = True
+    while run:
+        win.fill((0, 0, 0))
+        draw_text_middle(win, 'Press Any Key To Play', 60, (255, 255, 255))
+        pygame.display.update()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+            if event.type == pygame.KEYDOWN:
+                update_score(0) # reset score before starting new game
+                main(win)
+    pygame.display.quit()
 
 def main(win):
     last_score = max_score()
@@ -287,6 +293,7 @@ def main(win):
             score += clear_rows(grid, locked_positions) * 10
 
         draw_window(win, grid, score, last_score)
+        # draw_shadow(win, grid, current_piece)  # Draw the shadow
         draw_next_shapes(next_pieces, win)  # Pass the list of next pieces
         if pause:
             draw_modal(win)
@@ -298,20 +305,6 @@ def main(win):
             pygame.time.delay(1500)
             run = False
             update_score(score)
-
-def main_menu(win):
-    run = True
-    while run:
-        win.fill((0, 0, 0))
-        draw_text_middle(win, 'Press Any Key To Play', 60, (255, 255, 255))
-        pygame.display.update()
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run = False
-            if event.type == pygame.KEYDOWN:
-                main(win)
-    pygame.display.quit()
-
 
 window = pygame.display.set_mode((S_WIDTH, S_HEIGHT))
 pygame.display.set_caption('PYTHON TETRIS')

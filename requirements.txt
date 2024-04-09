@@ -1,0 +1,3 @@
+# Core dependencies
+
+pygame #PyGame library (latest version)
