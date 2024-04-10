@@ -1,9 +1,9 @@
 # 🐍 Python Tetris
 
 <p>
-  <a aria-label="Python Version" href="https://www.python.org/downloads/">
+<!--   <a aria-label="Python Version" href="https://www.python.org/downloads/">
     <img src="https://img.shields.io/pypi/pyversions/pygame?style=for-the-badge&logo=python&logoColor=yellow&color=yellow">
-  </a>
+  </a> -->
   <a aria-label="GitHub commit activity" href="https://github.com/RedDotz20/python-tetris/commits/main/" title="GitHub commit activity">
     <img src="https://img.shields.io/github/commit-activity/w/RedDotz20/python-tetris?style=for-the-badge">
   </a>
