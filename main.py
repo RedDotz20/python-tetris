@@ -34,7 +34,7 @@ def main_menu(win):
                 run = False
             if event.type == pygame.KEYDOWN:
                 update_score(0)  # reset score before starting new game
-                main(win)
+                main(win) # TODO: Add a Modal for continue or exit game
     pygame.display.quit()
 
 
@@ -53,12 +53,19 @@ def main(win):
     score = 0
     pause = False
     modal_open = False
+    last_speed_update_score = 0
 
     while run:
         grid = create_grid(locked_positions)
         fall_time += clock.get_rawtime()
         level_time += clock.get_rawtime()
-        clock.tick()
+        clock.tick(60)
+
+        # INCREASING SPEED PER MULTIPLE OF 20
+        if score // 20 > last_speed_update_score and score < 140: # Speed updates per 20 points && Max Fall Speed is achieved at 150
+            last_speed_update_score = score // 20  # Update the last speed update score
+            if fall_speed > 0.05:  # Max Fall Speed Limit: 0.05
+                fall_speed -= 0.02  # Rate of Fall Accelaration
 
         if level_time / 1000 > 5:
             level_time = 0
@@ -144,7 +151,6 @@ def main(win):
             run = False
             update_score(score)
 
-
-window = pygame.display.set_mode((S_WIDTH, S_HEIGHT))
-pygame.display.set_caption("PYTHON TETRIS")
-main_menu(window)
+window = pygame.display.set_mode((S_WIDTH, S_HEIGHT)) # Window Creation
+pygame.display.set_caption("PYTHON TETRIS") # Window Title
+main_menu(window) # Window Opening
