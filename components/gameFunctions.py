@@ -113,14 +113,14 @@ def draw_next_shapes(next_shapes, surface):
 # MAIN GAME WINDOW 
 def draw_window(surface, grid, score=0, last_score=0):
 
-    # Main Window
+    # Whole Window
     surface.fill((31, 45, 86)) # Window Background
     pygame.font.init()
     font = pygame.font.SysFont('comicsans', 60)
     label = font.render('Tetris', 1, (255, 255, 255))
     surface.blit(label, (TOP_LEFT_X + PLAY_WIDTH / 2 - (label.get_width() / 2), 15))
 
-    # Score
+    # Current Score
     font = pygame.font.SysFont('comicsans', 30)
     label = font.render('Score: ' + str(score), 1, (255, 255, 255))
     sx = TOP_LEFT_X + PLAY_WIDTH + 50
@@ -133,33 +133,29 @@ def draw_window(surface, grid, score=0, last_score=0):
     sy = TOP_LEFT_Y + 200
     surface.blit(label, (sx + 20, sy + 160)) 
 
-    # Grid Background 
+    # Patterned Background 
     bg  = pygame.image.load("components/play-area-grid.png")
     surface.blit(bg, (TOP_LEFT_X, TOP_LEFT_Y))
 
-    # PLAY AREA
+    # Play Area Rendering
     for i, row in enumerate(grid):
         for j, color in enumerate(row):
-            if color != (0, 0, 0):  # If cell is not empty
+            if color != (0, 0, 0):
                 pygame.draw.rect(
                     surface,
-                    color,  # Draw the cell color
+                    color,
                     (TOP_LEFT_X + j * BLOCK_SIZE, TOP_LEFT_Y + i * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE), 0
                 )
 
-    draw_grid(surface, grid) # GRID LINES
-    pygame.draw.rect(surface, (255, 255, 255), (TOP_LEFT_X, TOP_LEFT_Y, PLAY_WIDTH, PLAY_HEIGHT), 5)
+    draw_grid(surface, grid) # Grid Lines
+    pygame.draw.rect(surface, (255, 255, 255), (TOP_LEFT_X, TOP_LEFT_Y, PLAY_WIDTH, PLAY_HEIGHT), 5) # Play Area Outline
     
-
-
 def draw_modal(surface):
-    # Draw filled rectangle (modal)
+    # Modal Screen
     pygame.draw.rect(surface, (0, 0, 0), (TOP_LEFT_X + 50, TOP_LEFT_Y + 200, 200, 200))
+    pygame.draw.rect(surface, (255, 255, 255), (TOP_LEFT_X + 50, TOP_LEFT_Y + 200, 200, 200), 3) # Outline
 
-    # Draw outline rectangle
-    pygame.draw.rect(surface, (255, 255, 255), (TOP_LEFT_X + 50, TOP_LEFT_Y + 200, 200, 200), 3)
-
-    # Render and blit labels
+    # Content and Rendering
     font = pygame.font.SysFont('comicsans', 30)
     resume_label = font.render('Resume', 1, (255, 255, 255))
     restart_label = font.render('Restart', 1, (255, 255, 255))
