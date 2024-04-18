@@ -5,9 +5,13 @@ from src.variables import (
     S_WIDTH, S_HEIGHT, PLAY_WIDTH, PLAY_HEIGHT, BLOCK_SIZE, TOP_LEFT_X, TOP_LEFT_Y)
 
 pygame.font.init()
+pygame.mixer.init()
 
 game_font = "components/Lexend.ttf"
 font = pygame.font.Font(game_font, 30)
+
+clear = pygame.mixer.Sound("components\sounds\clear.ogg")
+place = pygame.mixer.Sound("components\sounds\place.ogg")
 
 # GRID CREATION
 def create_grid(locked_pos=None):
@@ -70,6 +74,7 @@ def draw_grid(surface, grid):
                 2
             )
 
+# CLEAR ROWS
 def clear_rows(grid, locked):
     inc = 0
     for i in range(len(grid) - 1, -1, -1):
@@ -84,12 +89,14 @@ def clear_rows(grid, locked):
                     continue
 
     if inc > 0:
+        clear.play()
         for key in sorted(list(locked), key=lambda x: x[1])[::-1]:
             x, y = key
             if y < ind:
                 new_key = (x, y + inc)
                 locked[new_key] = locked.pop(key)
 
+    place.play()
     return inc
 
 # UPCOMING SHAPES PREVIEW
