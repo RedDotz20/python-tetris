@@ -62,10 +62,10 @@ def main(win):
         clock.tick(60)
 
         # INCREASING SPEED PER MULTIPLE OF 20
-        if score // 20 > last_speed_update_score and score < 160: # Speed updates per 20 points && Max Fall Speed is achieved at 160
+        if score // 20 > last_speed_update_score and score < 200: # Speed updates per 20 points && Max Fall Speed is achieved at 160
             last_speed_update_score = score // 20  # Update the last speed update score
             if fall_speed > 0.05:  # Max Fall Speed Limit: 0.05
-                fall_speed -= 0.015  # Rate of Fall Accelaration
+                fall_speed -= 0.02  # Rate of Fall Accelaration
 
         if level_time / 1000 > 5:
             level_time = 0
