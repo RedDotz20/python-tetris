@@ -94,7 +94,7 @@ def clear_rows(grid, locked):
 
 # UPCOMING SHAPES PREVIEW
 def draw_next_shapes(next_shapes, surface):
-    label = font.render('NEXT SHAPE', 1, (255, 255, 255))
+    label = font.render('NEXT SHAPE', 1, (224, 209, 99))
     sx = TOP_LEFT_X + PLAY_WIDTH + 30
     sy = TOP_LEFT_Y + PLAY_HEIGHT / 2 - 100
 
@@ -119,17 +119,19 @@ def draw_window(surface, grid, score=0, last_score=0):
     # Whole Window
     surface.fill((31, 45, 86)) # Window Background
     title = pygame.font.Font(game_font, 60)
-    label = title.render('TETRIS', 1, (255, 255, 255))
+    label = title.render('TETRIS', 1, (224, 209, 99))
     surface.blit(label, (15, 15))
 
     # Current Score
-    label = font.render('SCORE: ' + str(score), 1, (255, 255, 255))
+    label = font.render('SCORE', 1, (224, 209, 99))
+    score_text = font.render(str(score), 1, (255, 255, 255))
     sx = TOP_LEFT_X + PLAY_WIDTH + 30
     sy = TOP_LEFT_Y + PLAY_HEIGHT / 2 - 100
     surface.blit(label, (sx + 20, sy + 160))
+    surface.blit(score_text, (sx + 20, sy + 200))
 
     # High Score
-    label = font.render('HIGH SCORE', 1, (255, 255, 255))
+    label = font.render('HIGH SCORE', 1, (224, 209, 99))
     high_score = font.render(last_score, 1, (255, 255, 255))
     sx = TOP_LEFT_X - 250
     sy = TOP_LEFT_Y + 200
