@@ -4,6 +4,11 @@ from components.shapes import convert_shape_format
 from src.variables import (
     S_WIDTH, S_HEIGHT, PLAY_WIDTH, PLAY_HEIGHT, BLOCK_SIZE, TOP_LEFT_X, TOP_LEFT_Y)
 
+pygame.font.init()
+
+game_font = "components/Lexend.ttf"
+font = pygame.font.Font(game_font, 30)
+
 # GRID CREATION
 def create_grid(locked_pos=None):
     grid = [[(0, 0, 0) for _ in range(10)] for _ in range(20)]
@@ -36,7 +41,6 @@ def check_lost(positions):
     return False
 
 def draw_text_middle(surface, text, size, color):
-    font = pygame.font.SysFont("comicsans", size, bold=True)
     label = font.render(text, 1, color)
     surface.blit(
         label, (
@@ -90,9 +94,8 @@ def clear_rows(grid, locked):
 
 # UPCOMING SHAPES PREVIEW
 def draw_next_shapes(next_shapes, surface):
-    font = pygame.font.SysFont('comicsans', 30)
-    label = font.render('Next Shape', 1, (255, 255, 255))
-    sx = TOP_LEFT_X + PLAY_WIDTH + 50
+    label = font.render('NEXT SHAPE', 1, (255, 255, 255))
+    sx = TOP_LEFT_X + PLAY_WIDTH + 30
     sy = TOP_LEFT_Y + PLAY_HEIGHT / 2 - 100
 
     for k, shape in enumerate(next_shapes):
@@ -115,20 +118,18 @@ def draw_window(surface, grid, score=0, last_score=0):
 
     # Whole Window
     surface.fill((31, 45, 86)) # Window Background
-    pygame.font.init()
-    font = pygame.font.SysFont('comicsans', 60)
-    label = font.render('Tetris', 1, (255, 255, 255))
+    title = pygame.font.Font(game_font, 60)
+    label = title.render('TETRIS', 1, (255, 255, 255))
     surface.blit(label, (15, 15))
 
     # Current Score
-    font = pygame.font.SysFont('comicsans', 30)
-    label = font.render('Score: ' + str(score), 1, (255, 255, 255))
-    sx = TOP_LEFT_X + PLAY_WIDTH + 50
+    label = font.render('SCORE: ' + str(score), 1, (255, 255, 255))
+    sx = TOP_LEFT_X + PLAY_WIDTH + 30
     sy = TOP_LEFT_Y + PLAY_HEIGHT / 2 - 100
     surface.blit(label, (sx + 20, sy + 160))
 
     # High Score
-    label = font.render('High Score', 1, (255, 255, 255))
+    label = font.render('HIGH SCORE', 1, (255, 255, 255))
     high_score = font.render(last_score, 1, (255, 255, 255))
     sx = TOP_LEFT_X - 250
     sy = TOP_LEFT_Y + 200
@@ -158,9 +159,8 @@ def draw_modal(surface):
     pygame.draw.rect(surface, (255, 255, 255), (TOP_LEFT_X + 50, TOP_LEFT_Y + 200, 200, 200), 3) # Outline
 
     # Content and Rendering
-    font = pygame.font.SysFont('comicsans', 30)
-    resume_label = font.render('Resume', 1, (255, 255, 255))
-    restart_label = font.render('Restart', 1, (255, 255, 255))
+    resume_label = font.render('RESUME', 1, (255, 255, 255))
+    restart_label = font.render('RESTART', 1, (255, 255, 255))
     surface.blit(resume_label, (TOP_LEFT_X + 100, TOP_LEFT_Y + 250))
     surface.blit(restart_label, (TOP_LEFT_X + 100, TOP_LEFT_Y + 320))
 

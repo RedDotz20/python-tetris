@@ -21,22 +21,19 @@ from src.variables import (
     TOP_LEFT_Y,
 )
 
-pygame.font.init()
-
 def main_menu(win):
     run = True
     while run:
         win.fill((0, 0, 0))
-        draw_text_middle(win, "Press Any Key To Play", 60, (255, 255, 255))
+        draw_text_middle(win, "PRESS ANY KEY TO PLAY", 60, (255, 255, 255))
         pygame.display.update()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
             if event.type == pygame.KEYDOWN:
                 update_score(0)  # reset score before starting new game
-                main(win) # TODO: Add a Modal for continue or exit game
+                main(win)
     pygame.display.quit()
-
 
 def main(win):
     last_score = max_score()
