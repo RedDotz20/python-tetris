@@ -163,6 +163,6 @@ def draw_modal(surface):
     # Content and Rendering
     resume_label = font.render('RESUME', 1, (255, 255, 255))
     restart_label = font.render('RESTART', 1, (255, 255, 255))
-    surface.blit(resume_label, (TOP_LEFT_X + 100, TOP_LEFT_Y + 250))
-    surface.blit(restart_label, (TOP_LEFT_X + 100, TOP_LEFT_Y + 320))
+    surface.blit(resume_label, (TOP_LEFT_X + 85, TOP_LEFT_Y + 250))
+    surface.blit(restart_label, (TOP_LEFT_X + 85, TOP_LEFT_Y + 320))
 
