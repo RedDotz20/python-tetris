@@ -118,7 +118,7 @@ def draw_window(surface, grid, score=0, last_score=0):
     pygame.font.init()
     font = pygame.font.SysFont('comicsans', 60)
     label = font.render('Tetris', 1, (255, 255, 255))
-    surface.blit(label, (TOP_LEFT_X + PLAY_WIDTH / 2 - (label.get_width() / 2), 15))
+    surface.blit(label, (15, 15))
 
     # Current Score
     font = pygame.font.SysFont('comicsans', 30)
@@ -128,10 +128,12 @@ def draw_window(surface, grid, score=0, last_score=0):
     surface.blit(label, (sx + 20, sy + 160))
 
     # High Score
-    label = font.render('High Score: ' + last_score, 1, (255, 255, 255))
+    label = font.render('High Score', 1, (255, 255, 255))
+    high_score = font.render(last_score, 1, (255, 255, 255))
     sx = TOP_LEFT_X - 250
     sy = TOP_LEFT_Y + 200
-    surface.blit(label, (sx + 20, sy + 160)) 
+    surface.blit(label, (sx + 20, sy + 160))
+    surface.blit(high_score, (sx + 20, sy + 220))
 
     # Patterned Background 
     bg  = pygame.image.load("components/play-area-grid.png")
