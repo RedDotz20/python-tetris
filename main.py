@@ -148,6 +148,8 @@ def main(win):
             pygame.draw.rect(win, (255, 255, 255), (TOP_LEFT_X + 50, TOP_LEFT_Y + 200, 200, 200), 3) # Outline
             draw_text_middle(win, "YOU LOST!", 80, (175, 0, 0))
             draw_subtext_low(win, "Press ENTER to play again | Press ESC to quit", 40, (255, 255, 255))
+            run = False
+            update_score(score)
             pygame.display.update()
             while True:
                 for event in pygame.event.get():
