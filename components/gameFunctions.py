@@ -44,12 +44,23 @@ def check_lost(positions):
             return True
     return False
 
+# RENDERING CENTERED TEXT
 def draw_text_middle(surface, text, size, color):
     label = font.render(text, 1, color)
     surface.blit(
         label, (
             TOP_LEFT_X + PLAY_WIDTH / 2 - (label.get_width() / 2),
             TOP_LEFT_Y + PLAY_HEIGHT / 2 - label.get_height() / 2
+        )
+    )
+
+# RENDER CENTERED LOW SUBTEXT
+def draw_subtext_low(surface, text, size, color):
+    label = font.render(text, 1, color)
+    surface.blit(
+        label, (
+            TOP_LEFT_X + PLAY_WIDTH / 2 - (label.get_width() / 2),
+            TOP_LEFT_Y + PLAY_HEIGHT + 20 / 2 - label.get_height() / 2
         )
     )
 
