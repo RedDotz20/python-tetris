@@ -4,6 +4,7 @@ import pygame
 from components.scores import update_score, max_score
 from components.gameFunctions import (
     draw_text_middle,
+    draw_subtext_low,
     create_grid,
     valid_space,
     convert_shape_format,
@@ -142,14 +143,24 @@ def main(win):
         pygame.display.update()
 
         if check_lost(locked_positions):
+            pygame.draw.rect(win, (0, 0, 0), pygame.Rect(0, 0, S_WIDTH, S_HEIGHT))
             pygame.draw.rect(win, (0, 0, 0), (TOP_LEFT_X + 50, TOP_LEFT_Y + 200, 200, 200))
             pygame.draw.rect(win, (255, 255, 255), (TOP_LEFT_X + 50, TOP_LEFT_Y + 200, 200, 200), 3) # Outline
-            draw_text_middle(win, "YOU LOST!", 80, (255, 255, 255))
+            draw_text_middle(win, "YOU LOST!", 80, (175, 0, 0))
+            draw_subtext_low(win, "Press ENTER to play again | Press ESC to quit", 40, (255, 255, 255))
             pygame.display.update()
-            pygame.time.delay(1500)
-            run = False
-            update_score(score)
-
+            while True:
+                for event in pygame.event.get():
+                    if event.type == pygame.KEYDOWN:
+                        if event.key == pygame.K_RETURN :
+                            main_menu(win)
+                        elif event.key == pygame.K_ESCAPE:
+                            pygame.quit()
+                            exit()
+                    elif event.type == pygame.QUIT:
+                        pygame.quit()
+                        exit()
+            
 window = pygame.display.set_mode((S_WIDTH, S_HEIGHT)) # Window Creation
 pygame.display.set_caption("PYTHON TETRIS") # Window Title
 main_menu(window) # Window Opening
