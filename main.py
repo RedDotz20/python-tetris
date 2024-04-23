@@ -44,6 +44,7 @@ def main(win):
     run = True
     current_piece = get_shape()
     next_pieces = [get_shape(), get_shape()]  # Get the next two pieces
+    hold_piece = None 
     clock = pygame.time.Clock()
     fall_time = 0
     fall_speed = 0.27
@@ -52,6 +53,8 @@ def main(win):
     pause = False
     modal_open = False
     last_speed_update_score = 0
+    hold_used = False
+    turn_held = False
 
     while run:
         grid = create_grid(locked_positions)
@@ -111,6 +114,38 @@ def main(win):
                 if event.key == pygame.K_r and modal_open:
                     main_menu(win)
 
+                if event.key == pygame.K_LCTRL and not pause and not hold_used and not turn_held:
+                    if hold_piece is None:
+                        hold_piece = current_piece
+                        current_piece = next_pieces.pop(0)
+                        next_pieces.append(get_shape())
+                        current_piece.x = 4
+                        current_piece.y = 0
+                    else: 
+                        temp_piece = current_piece
+                        current_piece = hold_piece
+                        hold_piece = temp_piece
+                        current_piece.x = 4
+                        current_piece.y = 0
+                        turn_held = True
+                        hold_used = True
+                if event.key == pygame.K_LSHIFT and not pause and not turn_held:
+                    if not hold_piece:
+                        hold_piece = current_piece
+                        current_piece = next_pieces.pop(0)
+                        next_pieces.append(get_shape())
+                    else:
+                        temp_piece = hold_piece
+                        hold_piece = current_piece
+                        hold_piece.x = 6
+                        hold_piece.y = 2
+                        current_piece = temp_piece
+                        current_piece.x = 6
+                        current_piece.y = 2
+                        if not valid_space(current_piece, grid):
+                            run = False
+                
+                
             if event.type == pygame.MOUSEBUTTONDOWN and modal_open:
                 mouse_x, mouse_y = pygame.mouse.get_pos()
                 if TOP_LEFT_X + 50 < mouse_x < TOP_LEFT_X + 250:
@@ -133,6 +168,8 @@ def main(win):
             current_piece = next_pieces.pop(0)  # Get the next piece from the list
             next_pieces.append(get_shape())  # Add a new piece to the end of the list
             change_piece = False
+            turn_held = False  # Reset the turn-held flag
+            hold_used = False
             score += clear_rows(grid, locked_positions) * 10
 
         draw_window(win, grid, score, last_score)
