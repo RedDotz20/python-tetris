@@ -1,8 +1,8 @@
-import random
+# import random
 import pygame
 
-from components.scores import update_score, max_score
-from components.gameFunctions import (
+from src.components.scores import update_score, max_score
+from src.components.game_functions import (
     draw_text_middle,
     draw_subtext_low,
     create_grid,
@@ -14,8 +14,8 @@ from components.gameFunctions import (
     draw_modal,
     check_lost,
 )
-from components.shapes import(get_shape)
-from src.variables import (
+from src.components.shapes import(get_shape)
+from src.constants.global_variables import (
     S_WIDTH,
     S_HEIGHT,
     TOP_LEFT_X,
@@ -44,7 +44,7 @@ def main(win):
     run = True
     current_piece = get_shape()
     next_pieces = [get_shape(), get_shape()]  # Get the next two pieces
-    hold_piece = None 
+    hold_piece = None
     clock = pygame.time.Clock()
     fall_time = 0
     fall_speed = 0.27
@@ -63,7 +63,8 @@ def main(win):
         clock.tick(60)
 
         # INCREASING SPEED PER MULTIPLE OF 20
-        if score // 20 > last_speed_update_score and score < 200: # Speed updates per 20 points && Max Fall Speed is achieved at 160
+        # Speed updates per 20 points && Max Fall Speed is achieved at 160
+        if score // 20 > last_speed_update_score and score < 200:
             last_speed_update_score = score // 20  # Update the last speed update score
             if fall_speed > 0.05:  # Max Fall Speed Limit: 0.05
                 fall_speed -= 0.02  # Rate of Fall Accelaration
@@ -121,7 +122,7 @@ def main(win):
                         next_pieces.append(get_shape())
                         current_piece.x = 4
                         current_piece.y = 0
-                    else: 
+                    else:
                         temp_piece = current_piece
                         current_piece = hold_piece
                         hold_piece = temp_piece
@@ -144,8 +145,6 @@ def main(win):
                         current_piece.y = 2
                         if not valid_space(current_piece, grid):
                             run = False
-                
-                
             if event.type == pygame.MOUSEBUTTONDOWN and modal_open:
                 mouse_x, mouse_y = pygame.mouse.get_pos()
                 if TOP_LEFT_X + 50 < mouse_x < TOP_LEFT_X + 250:
@@ -182,9 +181,17 @@ def main(win):
         if check_lost(locked_positions):
             pygame.draw.rect(win, (0, 0, 0), pygame.Rect(0, 0, S_WIDTH, S_HEIGHT))
             pygame.draw.rect(win, (0, 0, 0), (TOP_LEFT_X + 50, TOP_LEFT_Y + 200, 200, 200))
-            pygame.draw.rect(win, (255, 255, 255), (TOP_LEFT_X + 50, TOP_LEFT_Y + 200, 200, 200), 3) # Outline
+            pygame.draw.rect(win,
+                (255, 255, 255),
+                (TOP_LEFT_X + 50, TOP_LEFT_Y + 200, 200, 200),
+                3
+            ) # Outline
             draw_text_middle(win, "YOU LOST!", 80, (175, 0, 0))
-            draw_subtext_low(win, "Press ENTER to play again | Press ESC to quit", 40, (255, 255, 255))
+            draw_subtext_low(win,
+                "Press ENTER to play again | Press ESC to quit",
+                40,
+                (255, 255, 255)
+            )
             run = False
             update_score(score)
             pygame.display.update()
@@ -199,7 +206,6 @@ def main(win):
                     elif event.type == pygame.QUIT:
                         pygame.quit()
                         exit()
-            
 window = pygame.display.set_mode((S_WIDTH, S_HEIGHT)) # Window Creation
 pygame.display.set_caption("PYTHON TETRIS") # Window Title
 main_menu(window) # Window Opening

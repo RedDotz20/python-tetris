@@ -17,7 +17,7 @@
 
 A Tetris game built with Python programming language alongside with `PyGame` library.
 
-## 🚀 Features 
+## 🚀 Features
 
 - [x] `Blocks (Tetrominoes)`: Tetris is built around tetrominoes, geometric shapes consisting of four square blocks each. These shapes fall from the top of the game area and can be rotated and moved horizontally as they descend.
 - [x] `Gameplay Mechanics`: Players must manipulate the falling tetrominoes to create complete horizontal lines without any gaps. When a line is completed, it disappears, and any blocks above it will fall to fill the space. The game ends if the stack of tetrominoes reaches the top of the game area.
@@ -27,14 +27,14 @@ A Tetris game built with Python programming language alongside with `PyGame` lib
 - [ ] `Hold Piece`: Some versions of Tetris allow players to temporarily hold a tetromino, to be used strategically later.
 - [x] `Next Piece Preview`: Many Tetris games offer a preview of the next tetromino that will appear, allowing players to plan their moves in advance.
 
-## 💡 Prerequisites 
+## 💡 Prerequisites
 
 Before running the application, make sure you have the following installed:
 
 - Python `v3.6` or later
 - pip `v10.0.1` or later
 
-## 🛠️ Installation 
+## 🛠️ Installation
 
 1. Clone the repository
 
@@ -64,7 +64,7 @@ Execute the following to create a new `scores.txt` file and set it to `0`
 touch scores.txt
 ```
 
-## 🤝 Contributing 
+## 🤝 Contributing
 
 If you're open to contributions from others, outline guidelines for contributing to your project. This might include information on how to report bugs, submit feature requests, or contribute code.
 
@@ -73,6 +73,6 @@ If you're open to contributions from others, outline guidelines for contributing
 - [@carlos-tabangay | reddotz20](https://github.com/RedDotz20)
 - [@sam-velasco | zestomilk2002](https://github.com/ZestoMilk2002)
 
-## 📃 License 
+## 📃 License
 
 This project is [MIT licensed](./LICENSE)

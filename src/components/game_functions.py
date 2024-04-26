@@ -1,17 +1,20 @@
 import pygame
 
-from components.shapes import convert_shape_format
-from src.variables import (
-    S_WIDTH, S_HEIGHT, PLAY_WIDTH, PLAY_HEIGHT, BLOCK_SIZE, TOP_LEFT_X, TOP_LEFT_Y)
+from src.components.shapes import convert_shape_format
+
+# from components.shapes import convert_shape_format
+from src.constants.global_variables import (
+    # S_WIDTH, S_HEIGHT,
+    PLAY_WIDTH, PLAY_HEIGHT, BLOCK_SIZE, TOP_LEFT_X, TOP_LEFT_Y)
 
 pygame.font.init()
 pygame.mixer.init()
 
-game_font = "components/Lexend.ttf"
-font = pygame.font.Font(game_font, 30)
+GAME_FONT = "assets/fonts/Lexend.ttf"
 
-clear = pygame.mixer.Sound("components\sounds\clear.ogg")
-place = pygame.mixer.Sound("components\sounds\place.ogg")
+font = pygame.font.Font(GAME_FONT, 30)
+clear = pygame.mixer.Sound("assets/sounds/clear.ogg")
+place = pygame.mixer.Sound("assets/sounds/place.ogg")
 
 # GRID CREATION
 def create_grid(locked_pos=None):
@@ -45,7 +48,7 @@ def check_lost(positions):
     return False
 
 # RENDERING CENTERED TEXT
-def draw_text_middle(surface, text, size, color):
+def draw_text_middle(surface, text, _size, color):
     label = font.render(text, 1, color)
     surface.blit(
         label, (
@@ -55,7 +58,7 @@ def draw_text_middle(surface, text, size, color):
     )
 
 # RENDER CENTERED LOW SUBTEXT
-def draw_subtext_low(surface, text, size, color):
+def draw_subtext_low(surface, text, _size, color):
     label = font.render(text, 1, color)
     surface.blit(
         label, (
@@ -131,12 +134,12 @@ def draw_next_shapes(next_shapes, surface):
                     )
     surface.blit(label, (sx + 10, sy - 70))
 
-# MAIN GAME WINDOW 
+# MAIN GAME WINDOW
 def draw_window(surface, grid, score=0, last_score=0):
 
     # Whole Window
     surface.fill((31, 45, 86)) # Window Background
-    title = pygame.font.Font(game_font, 60)
+    title = pygame.font.Font(GAME_FONT, 60)
     label = title.render('TETRIS', 1, (224, 209, 99))
     surface.blit(label, (15, 15))
 
@@ -156,8 +159,8 @@ def draw_window(surface, grid, score=0, last_score=0):
     surface.blit(label, (sx + 20, sy + 160))
     surface.blit(high_score, (sx + 20, sy + 220))
 
-    # Patterned Background 
-    bg  = pygame.image.load("components/play-area-grid.png")
+    # Patterned Background
+    bg  = pygame.image.load("assets/images/play-area-grid.png")
     surface.blit(bg, (TOP_LEFT_X, TOP_LEFT_Y))
 
     # Play Area Rendering
@@ -167,20 +170,33 @@ def draw_window(surface, grid, score=0, last_score=0):
                 pygame.draw.rect(
                     surface,
                     color,
-                    (TOP_LEFT_X + j * BLOCK_SIZE, TOP_LEFT_Y + i * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE), 0
+                    (
+                        TOP_LEFT_X + j * BLOCK_SIZE,
+                        TOP_LEFT_Y + i * BLOCK_SIZE,
+                        BLOCK_SIZE,
+                        BLOCK_SIZE
+                    ), 0
                 )
 
     draw_grid(surface, grid) # Grid Lines
-    pygame.draw.rect(surface, (255, 255, 255), (TOP_LEFT_X, TOP_LEFT_Y, PLAY_WIDTH, PLAY_HEIGHT), 5) # Play Area Outline
-    
+    pygame.draw.rect(
+        surface,
+        (255, 255, 255),
+        (TOP_LEFT_X, TOP_LEFT_Y, PLAY_WIDTH, PLAY_HEIGHT),
+        5
+    ) # Play Area Outline
+
 def draw_modal(surface):
     # Modal Screen
     pygame.draw.rect(surface, (0, 0, 0), (TOP_LEFT_X + 50, TOP_LEFT_Y + 200, 200, 200))
-    pygame.draw.rect(surface, (255, 255, 255), (TOP_LEFT_X + 50, TOP_LEFT_Y + 200, 200, 200), 3) # Outline
+    pygame.draw.rect(surface,
+        (255, 255, 255),
+        (TOP_LEFT_X + 50, TOP_LEFT_Y + 200, 200, 200),
+        3
+    ) # Outline
 
     # Content and Rendering
     resume_label = font.render('RESUME', 1, (255, 255, 255))
     restart_label = font.render('RESTART', 1, (255, 255, 255))
     surface.blit(resume_label, (TOP_LEFT_X + 85, TOP_LEFT_Y + 250))
     surface.blit(restart_label, (TOP_LEFT_X + 85, TOP_LEFT_Y + 320))
-

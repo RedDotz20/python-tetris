@@ -1,4 +1,4 @@
-import pygame
+# import pygame
 
 # UPDATING SCORES
 def update_score(nscore):

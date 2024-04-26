@@ -1,7 +1,7 @@
-import pygame
 import random
+# import pygame
 
-from src.constants import shapes, shape_colors
+from src.constants.shapes_format import shapes, shape_colors
 
 # PIECE CREATION
 class Piece:
