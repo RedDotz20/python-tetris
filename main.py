@@ -1,4 +1,4 @@
-# import random
+import random
 import pygame
 
 from src.components.scores import update_score, max_score
@@ -21,7 +21,30 @@ from src.constants.global_variables import (
     TOP_LEFT_X,
     TOP_LEFT_Y,
 )
+def calculate_score(score, milestone):
+    if milestone == 1:
+        return 10
+    elif milestone == 2:
+        return 20
+    elif milestone == 3:
+        return 30
+    elif milestone == 4:
+        return 40
+    else:
+        return 50
 
+def calculate_fall_speed(score, milestone):
+    if milestone == 1:
+        return 0.5
+    elif milestone == 2:
+        return 0.4
+    elif milestone == 3:
+        return 0.3
+    elif milestone == 4:
+        return 0.2
+    else:
+        return 0.1
+    
 def main_menu(win):
     run = True
     while run:
@@ -55,6 +78,9 @@ def main(win):
     last_speed_update_score = 0
     hold_used = False
     turn_held = False
+    milestone = 1  # Start at milestone 1
+    milestone_score = calculate_score(score, milestone)
+    fall_speed = calculate_fall_speed(score, milestone)
 
     while run:
         grid = create_grid(locked_positions)
@@ -167,9 +193,25 @@ def main(win):
             current_piece = next_pieces.pop(0)  # Get the next piece from the list
             next_pieces.append(get_shape())  # Add a new piece to the end of the list
             change_piece = False
-            turn_held = False  # Reset the turn-held flag
-            hold_used = False
-            score += clear_rows(grid, locked_positions) * 10
+            score += clear_rows(grid, locked_positions) * milestone_score
+
+            # Update milestone, milestone score, and fall speed if necessary
+            if score >= 100 and milestone == 1:
+                milestone = 2
+                milestone_score = calculate_score(score, milestone)
+                fall_speed = calculate_fall_speed(score, milestone)
+            elif score >= 250 and milestone == 2:
+                milestone = 3
+                milestone_score = calculate_score(score, milestone)
+                fall_speed = calculate_fall_speed(score, milestone)
+            elif score >= 450 and milestone == 3:
+                milestone = 4
+                milestone_score = calculate_score(score, milestone)
+                fall_speed = calculate_fall_speed(score, milestone)
+            elif score >= 700 and milestone == 4:
+                milestone = 5
+                milestone_score = calculate_score(score, milestone)
+                fall_speed = calculate_fall_speed(score, milestone)
 
         draw_window(win, grid, score, last_score)
         # draw_shadow(win, grid, current_piece)  # Draw the shadow
@@ -181,24 +223,16 @@ def main(win):
         if check_lost(locked_positions):
             pygame.draw.rect(win, (0, 0, 0), pygame.Rect(0, 0, S_WIDTH, S_HEIGHT))
             pygame.draw.rect(win, (0, 0, 0), (TOP_LEFT_X + 50, TOP_LEFT_Y + 200, 200, 200))
-            pygame.draw.rect(win,
-                (255, 255, 255),
-                (TOP_LEFT_X + 50, TOP_LEFT_Y + 200, 200, 200),
-                3
-            ) # Outline
+            pygame.draw.rect(win, (255, 255, 255), (TOP_LEFT_X + 50, TOP_LEFT_Y + 200, 200, 200), 3)  # Outline
             draw_text_middle(win, "YOU LOST!", 80, (175, 0, 0))
-            draw_subtext_low(win,
-                "Press ENTER to play again | Press ESC to quit",
-                40,
-                (255, 255, 255)
-            )
+            draw_subtext_low(win, "Press ENTER to play again | Press ESC to quit", 40, (255, 255, 255))
             run = False
             update_score(score)
             pygame.display.update()
             while True:
                 for event in pygame.event.get():
                     if event.type == pygame.KEYDOWN:
-                        if event.key == pygame.K_RETURN :
+                        if event.key == pygame.K_RETURN:
                             main_menu(win)
                         elif event.key == pygame.K_ESCAPE:
                             pygame.quit()
@@ -206,6 +240,7 @@ def main(win):
                     elif event.type == pygame.QUIT:
                         pygame.quit()
                         exit()
-window = pygame.display.set_mode((S_WIDTH, S_HEIGHT)) # Window Creation
-pygame.display.set_caption("PYTHON TETRIS") # Window Title
-main_menu(window) # Window Opening
+
+window = pygame.display.set_mode((S_WIDTH, S_HEIGHT))  # Window Creation
+pygame.display.set_caption("PYTHON TETRIS")  # Window Title
+main_menu(window)  # Window Opening
