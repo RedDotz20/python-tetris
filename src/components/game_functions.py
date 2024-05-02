@@ -200,3 +200,29 @@ def draw_modal(surface):
     restart_label = font.render('RESTART', 1, (255, 255, 255))
     surface.blit(resume_label, (TOP_LEFT_X + 85, TOP_LEFT_Y + 250))
     surface.blit(restart_label, (TOP_LEFT_X + 85, TOP_LEFT_Y + 320))
+
+# Scores per Milestones
+def calculate_score(score, milestone):
+    if milestone == 1:
+        return 10
+    elif milestone == 2:
+        return 20
+    elif milestone == 3:
+        return 30
+    elif milestone == 4:
+        return 40
+    else:
+        return 50
+
+# Fall Speed per Milestones
+def calculate_fall_speed(score, milestone):
+    if milestone == 1:
+        return 0.5
+    elif milestone == 2:
+        return 0.4
+    elif milestone == 3:
+        return 0.3
+    elif milestone == 4:
+        return 0.2
+    else:
+        return 0.1
