@@ -23,6 +23,7 @@ from src.constants.global_variables import (
     TOP_LEFT_X,
     TOP_LEFT_Y,
 )
+
 def main_menu(win):
     run = True
     while run:
@@ -36,6 +37,7 @@ def main_menu(win):
                 update_score(0)  # reset score before starting new game
                 main(win)
     pygame.display.quit()
+
 def main(win):
     last_score = max_score()
     locked_positions = {}
@@ -89,19 +91,19 @@ def main(win):
                 if event.key == pygame.K_ESCAPE:
                     pause = not pause
                     modal_open = pause
-                if event.key == pygame.K_LEFT or event.key == pygame.K_a and not pause:
+                if (event.key == pygame.K_LEFT or event.key == pygame.K_a) and not pause:
                     current_piece.x -= 1
                     if not valid_space(current_piece, grid):
                         current_piece.x += 1
-                if event.key == pygame.K_RIGHT or event.key == pygame.K_d and not pause:
+                if (event.key == pygame.K_RIGHT or event.key == pygame.K_d) and not pause:
                     current_piece.x += 1
                     if not valid_space(current_piece, grid):
                         current_piece.x -= 1
-                if event.key == pygame.K_DOWN or event.key == pygame.K_s and not pause:
+                if (event.key == pygame.K_DOWN or event.key == pygame.K_s) and not pause:
                     current_piece.y += 1
                     if not valid_space(current_piece, grid):
                         current_piece.y -= 1
-                if event.key == pygame.K_UP or event.key == pygame.K_w and not pause:
+                if (event.key == pygame.K_UP or event.key == pygame.K_w) and not pause:
                     current_piece.rotation += 1
                     if not valid_space(current_piece, grid):
                         current_piece.rotation -= 1
@@ -166,24 +168,24 @@ def main(win):
             score += clear_rows(grid, locked_positions) * milestone_score
 
             # Update milestone, milestone score, and fall speed if necessary
-            if score >= 100 and milestone == 1:
+            if (score >= 100) and (milestone == 1):
                 milestone = 2
                 milestone_score = calculate_score(score, milestone)
                 fall_speed = calculate_fall_speed(score, milestone)
-            elif score >= 250 and milestone == 2:
+            elif (score >= 250) and (milestone == 2):
                 milestone = 3
                 milestone_score = calculate_score(score, milestone)
                 fall_speed = calculate_fall_speed(score, milestone)
-            elif score >= 450 and milestone == 3:
+            elif (score >= 450) and (milestone == 3):
                 milestone = 4
                 milestone_score = calculate_score(score, milestone)
                 fall_speed = calculate_fall_speed(score, milestone)
-            elif score >= 700 and milestone == 4:
+            elif (score >= 700) and (milestone == 4):
                 milestone = 5
                 milestone_score = calculate_score(score, milestone)
                 fall_speed = calculate_fall_speed(score, milestone)
 
-        draw_window(win, grid, score, last_score)
+        draw_window(win, grid, score, last_score, milestone)
         # draw_shadow(win, grid, current_piece)  # Draw the shadow
         draw_next_shapes(next_pieces, win)  # Pass the list of next pieces
         if pause:

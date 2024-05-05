@@ -135,7 +135,7 @@ def draw_next_shapes(next_shapes, surface):
     surface.blit(label, (sx + 10, sy - 70))
 
 # MAIN GAME WINDOW
-def draw_window(surface, grid, score=0, last_score=0):
+def draw_window(surface, grid, score=0, last_score=0, milestone=1):
 
     # Whole Window
     surface.fill((31, 45, 86)) # Window Background
@@ -158,6 +158,14 @@ def draw_window(surface, grid, score=0, last_score=0):
     sy = TOP_LEFT_Y + 200
     surface.blit(label, (sx + 20, sy + 160))
     surface.blit(high_score, (sx + 20, sy + 220))
+
+    # Milestone / Level
+    label = font.render("LEVEL", 1, (255, 255, 255))
+    current_level = font.render(str(milestone), 1, (255, 255, 255))
+    sx = TOP_LEFT_X - 250
+    sy = TOP_LEFT_Y + 50
+    surface.blit(label, (sx + 20, sy + 160))
+    surface.blit(current_level, (sx + 20, sy + 220))
 
     # Patterned Background
     bg  = pygame.image.load("assets/images/play-area-grid.png")
@@ -202,7 +210,7 @@ def draw_modal(surface):
     surface.blit(restart_label, (TOP_LEFT_X + 85, TOP_LEFT_Y + 320))
 
 # Scores per Milestones
-def calculate_score(score, milestone):
+def calculate_score(_score, milestone):
     if milestone == 1:
         return 10
     elif milestone == 2:
@@ -215,14 +223,14 @@ def calculate_score(score, milestone):
         return 50
 
 # Fall Speed per Milestones
-def calculate_fall_speed(score, milestone):
+def calculate_fall_speed(_score, milestone):
     if milestone == 1:
-        return 0.5
-    elif milestone == 2:
-        return 0.4
-    elif milestone == 3:
-        return 0.3
-    elif milestone == 4:
         return 0.2
-    else:
+    elif milestone == 2:
+        return 0.18
+    elif milestone == 3:
+        return 0.12
+    elif milestone == 4:
         return 0.1
+    else:
+        return 0.08
