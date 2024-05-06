@@ -133,9 +133,17 @@ def draw_next_shapes(next_shapes, surface):
                         BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE), 0
                     )
     surface.blit(label, (sx + 10, sy - 70))
+    
+def draw_hold_shape_area(surface, screen, hold_used=0):
+    
+    label = font.render('HOLD', 1, (224, 209, 99))
+    sx = TOP_LEFT_X + 250
+    sy = TOP_LEFT_Y + 25
+    surface.blit(label, (sx + 20, sy + 160))
+    surface.blit(hold_used, (sx + 20, sy + 220))
 
 # MAIN GAME WINDOW
-def draw_window(surface, grid, score=0, last_score=0, milestone=1):
+def draw_window(surface, grid, score=0, last_score=0, milestone=1,hold_shape=None,):
 
     # Whole Window
     surface.fill((31, 45, 86)) # Window Background
@@ -150,12 +158,43 @@ def draw_window(surface, grid, score=0, last_score=0, milestone=1):
     sy = TOP_LEFT_Y + PLAY_HEIGHT / 2 - 100
     surface.blit(label, (sx + 20, sy + 160))
     surface.blit(score_text, (sx + 20, sy + 200))
+    
+    # HOLD
+    label = font.render('HOLD', 1, (224, 209, 99))
+    high_score = font.render(last_score, 1, (255, 255, 255))
+    sx = TOP_LEFT_X - 250
+    sy = TOP_LEFT_Y - 50
+    surface.blit(label, (sx + 20, sy + 160))
+    
+    fixed_position = (1, 1)  # Adjust these values as needed
+    if hold_shape:
+        
+        sx = TOP_LEFT_X
+        sy = TOP_LEFT_Y
+        # Render the hold shape
+        shape_pos = convert_shape_format(hold_shape)
+        # Set a fixed position for the hold piece
+        for _, (x, y) in enumerate(shape_pos):
+            if y > -1:
+                # Calculate the position for drawing the hold piece
+                hold_piece_x = TOP_LEFT_X - 150
+                hold_piece_y = TOP_LEFT_Y + 200
+                pygame.draw.rect(
+                    surface,
+                    hold_shape.color,
+                    (
+                        hold_piece_x,
+                        hold_piece_y,
+                        BLOCK_SIZE,
+                        BLOCK_SIZE
+                    ), 0
+                )
 
     # High Score
     label = font.render('HIGH SCORE', 1, (224, 209, 99))
     high_score = font.render(last_score, 1, (255, 255, 255))
     sx = TOP_LEFT_X - 250
-    sy = TOP_LEFT_Y + 200
+    sy = TOP_LEFT_Y + 275
     surface.blit(label, (sx + 20, sy + 160))
     surface.blit(high_score, (sx + 20, sy + 220))
 
@@ -163,7 +202,7 @@ def draw_window(surface, grid, score=0, last_score=0, milestone=1):
     label = font.render("LEVEL", 1, (255, 255, 255))
     current_level = font.render(str(milestone), 1, (255, 255, 255))
     sx = TOP_LEFT_X - 250
-    sy = TOP_LEFT_Y + 50
+    sy = TOP_LEFT_Y + 150
     surface.blit(label, (sx + 20, sy + 160))
     surface.blit(current_level, (sx + 20, sy + 220))
 

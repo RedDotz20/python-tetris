@@ -185,8 +185,9 @@ def main(win):
                 milestone_score = calculate_score(score, milestone)
                 fall_speed = calculate_fall_speed(score, milestone)
 
-        draw_window(win, grid, score, last_score, milestone)
+        draw_window(win, grid, score, last_score, milestone, hold_piece)
         # draw_shadow(win, grid, current_piece)  # Draw the shadow
+        draw_window(win, grid, score, last_score, milestone, hold_shape=hold_piece)
         draw_next_shapes(next_pieces, win)  # Pass the list of next pieces
         if pause:
             draw_modal(win)
