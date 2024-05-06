@@ -13,6 +13,8 @@ from src.components.game_functions import (
     draw_next_shapes,
     draw_modal,
     check_lost,
+    calculate_score,
+    calculate_fall_speed,
 )
 from src.components.shapes import(get_shape)
 from src.constants.global_variables import (
@@ -87,19 +89,16 @@ def main(win):
         fall_time += clock.get_rawtime()
         level_time += clock.get_rawtime()
         clock.tick(60)
-
         # INCREASING SPEED PER MULTIPLE OF 20
         # Speed updates per 20 points && Max Fall Speed is achieved at 160
         if score // 20 > last_speed_update_score and score < 200:
             last_speed_update_score = score // 20  # Update the last speed update score
             if fall_speed > 0.05:  # Max Fall Speed Limit: 0.05
                 fall_speed -= 0.02  # Rate of Fall Accelaration
-
         if level_time / 1000 > 5:
             level_time = 0
             if level_time > 0.12:
                 level_time -= 0.005
-
         if fall_time / 1000 > fall_speed:
             fall_time = 0
             if not pause:
@@ -107,29 +106,27 @@ def main(win):
                 if not (valid_space(current_piece, grid)) and current_piece.y > 0:
                     current_piece.y -= 1
                     change_piece = True
-
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 run = False
                 pygame.display.quit()
-
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     pause = not pause
                     modal_open = pause
-                if event.key == pygame.K_LEFT or event.key == pygame.K_a and not pause:
+                if (event.key == pygame.K_LEFT or event.key == pygame.K_a) and not pause:
                     current_piece.x -= 1
                     if not valid_space(current_piece, grid):
                         current_piece.x += 1
-                if event.key == pygame.K_RIGHT or event.key == pygame.K_d and not pause:
+                if (event.key == pygame.K_RIGHT or event.key == pygame.K_d) and not pause:
                     current_piece.x += 1
                     if not valid_space(current_piece, grid):
                         current_piece.x -= 1
-                if event.key == pygame.K_DOWN or event.key == pygame.K_s and not pause:
+                if (event.key == pygame.K_DOWN or event.key == pygame.K_s) and not pause:
                     current_piece.y += 1
                     if not valid_space(current_piece, grid):
                         current_piece.y -= 1
-                if event.key == pygame.K_UP or event.key == pygame.K_w and not pause:
+                if (event.key == pygame.K_UP or event.key == pygame.K_w) and not pause:
                     current_piece.rotation += 1
                     if not valid_space(current_piece, grid):
                         current_piece.rotation -= 1
@@ -140,7 +137,6 @@ def main(win):
                     change_piece = True
                 if event.key == pygame.K_r and modal_open:
                     main_menu(win)
-
                 if event.key == pygame.K_LCTRL and not pause and not hold_used and not turn_held:
                     if hold_piece is None:
                         hold_piece = current_piece
@@ -179,13 +175,10 @@ def main(win):
                         modal_open = False
                     elif TOP_LEFT_Y + 320 < mouse_y < TOP_LEFT_Y + 360:
                         main_menu(win)
-
         shape_pos = convert_shape_format(current_piece)
-
         for _, (x, y) in enumerate(shape_pos):
             if y > -1:
                 grid[y][x] = current_piece.color
-
         if change_piece:
             for pos in shape_pos:
                 p = (pos[0], pos[1])
@@ -193,6 +186,7 @@ def main(win):
             current_piece = next_pieces.pop(0)  # Get the next piece from the list
             next_pieces.append(get_shape())  # Add a new piece to the end of the list
             change_piece = False
+<<<<<<< HEAD
             score += clear_rows(grid, locked_positions) * milestone_score
 
             # Update milestone, milestone score, and fall speed if necessary
@@ -212,14 +206,37 @@ def main(win):
                 milestone = 5
                 milestone_score = calculate_score(score, milestone)
                 fall_speed = calculate_fall_speed(score, milestone)
+=======
+            turn_held = False  # Reset the turn-held flag
+            hold_used = False
+            score += clear_rows(grid, locked_positions) * milestone_score
+>>>>>>> 511081b54bfc4a0c6c79e66b700cc837eccaeb5e
 
-        draw_window(win, grid, score, last_score)
+            # Update milestone, milestone score, and fall speed if necessary
+            if (score >= 100) and (milestone == 1):
+                milestone = 2
+                milestone_score = calculate_score(score, milestone)
+                fall_speed = calculate_fall_speed(score, milestone)
+            elif (score >= 250) and (milestone == 2):
+                milestone = 3
+                milestone_score = calculate_score(score, milestone)
+                fall_speed = calculate_fall_speed(score, milestone)
+            elif (score >= 450) and (milestone == 3):
+                milestone = 4
+                milestone_score = calculate_score(score, milestone)
+                fall_speed = calculate_fall_speed(score, milestone)
+            elif (score >= 700) and (milestone == 4):
+                milestone = 5
+                milestone_score = calculate_score(score, milestone)
+                fall_speed = calculate_fall_speed(score, milestone)
+
+        draw_window(win, grid, score, last_score, milestone, hold_piece)
         # draw_shadow(win, grid, current_piece)  # Draw the shadow
+        draw_window(win, grid, score, last_score, milestone, hold_shape=hold_piece)
         draw_next_shapes(next_pieces, win)  # Pass the list of next pieces
         if pause:
             draw_modal(win)
         pygame.display.update()
-
         if check_lost(locked_positions):
             pygame.draw.rect(win, (0, 0, 0), pygame.Rect(0, 0, S_WIDTH, S_HEIGHT))
             pygame.draw.rect(win, (0, 0, 0), (TOP_LEFT_X + 50, TOP_LEFT_Y + 200, 200, 200))
@@ -240,7 +257,10 @@ def main(win):
                     elif event.type == pygame.QUIT:
                         pygame.quit()
                         exit()
+<<<<<<< HEAD
 
+=======
+>>>>>>> 511081b54bfc4a0c6c79e66b700cc837eccaeb5e
 window = pygame.display.set_mode((S_WIDTH, S_HEIGHT))  # Window Creation
 pygame.display.set_caption("PYTHON TETRIS")  # Window Title
 main_menu(window)  # Window Opening
