@@ -1,8 +1,9 @@
 import random
+# import pygame
 
 from src.constants.shapes_format import shapes, shape_colors
 
-#* PIECE CREATION
+# PIECE CREATION
 class Piece:
     def __init__(self, x, y, shape):
         self.x = x
@@ -11,7 +12,7 @@ class Piece:
         self.color = shape_colors[shapes.index(shape)]
         self.rotation = 0
 
-#* SHAPE FORMAT
+# SHAPE FORMAT
 def convert_shape_format(shape):
     positions = []
     shape_format = shape.shape[shape.rotation % len(shape.shape)]
@@ -27,6 +28,6 @@ def convert_shape_format(shape):
 
     return positions
 
-#* SHAPES
+# SHAPES
 def get_shape():
     return Piece(5, 0, random.choice(shapes))

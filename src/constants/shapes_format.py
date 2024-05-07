@@ -1,4 +1,4 @@
-#? SHAPE FORMATS
+# SHAPE FORMATS
 
 S = [
       ['.....',
