@@ -1,11 +1,9 @@
 import pygame
 
 from src.components.shapes import convert_shape_format
-
-# from components.shapes import convert_shape_format
 from src.constants.global_variables import (
-    # S_WIDTH, S_HEIGHT,
-    PLAY_WIDTH, PLAY_HEIGHT, BLOCK_SIZE, TOP_LEFT_X, TOP_LEFT_Y)
+    PLAY_WIDTH, PLAY_HEIGHT, BLOCK_SIZE, TOP_LEFT_X, TOP_LEFT_Y
+)
 
 pygame.font.init()
 pygame.mixer.init()
@@ -16,7 +14,7 @@ font = pygame.font.Font(GAME_FONT, 30)
 clear = pygame.mixer.Sound("assets/sounds/clear.ogg")
 place = pygame.mixer.Sound("assets/sounds/place.ogg")
 
-# GRID CREATION
+#* GRID CREATION
 def create_grid(locked_pos=None):
     grid = [[(0, 0, 0) for _ in range(10)] for _ in range(20)]
 
@@ -27,7 +25,7 @@ def create_grid(locked_pos=None):
                 grid[i][j] = c
     return grid
 
-# VALID SPACE
+#* VALID SPACE
 def valid_space(shape, grid):
     accepted_pos = [[(j, i) for j in range(10) if grid[i][j] == (0, 0, 0)] for i in range(20)]
     accepted_pos = [j for sub in accepted_pos for j in sub]
@@ -39,7 +37,7 @@ def valid_space(shape, grid):
                 return False
     return True
 
-# CHECK LOST
+#* CHECK LOST
 def check_lost(positions):
     for pos in positions:
         _, y = pos
@@ -47,7 +45,7 @@ def check_lost(positions):
             return True
     return False
 
-# RENDERING CENTERED TEXT
+#* RENDERING CENTERED TEXT
 def draw_text_middle(surface, text, _size, color):
     label = font.render(text, 1, color)
     surface.blit(
@@ -57,7 +55,7 @@ def draw_text_middle(surface, text, _size, color):
         )
     )
 
-# RENDER CENTERED LOW SUBTEXT
+#* RENDER CENTERED LOW SUBTEXT
 def draw_subtext_low(surface, text, _size, color):
     label = font.render(text, 1, color)
     surface.blit(
@@ -67,7 +65,7 @@ def draw_subtext_low(surface, text, _size, color):
         )
     )
 
-# GRID LINES
+#* GRID LINES
 def draw_grid(surface, grid):
     sx = TOP_LEFT_X
     sy = TOP_LEFT_Y
@@ -88,7 +86,7 @@ def draw_grid(surface, grid):
                 2
             )
 
-# CLEAR ROWS
+#* CLEAR ROWS
 def clear_rows(grid, locked):
     inc = 0
     for i in range(len(grid) - 1, -1, -1):
@@ -113,7 +111,7 @@ def clear_rows(grid, locked):
     place.play()
     return inc
 
-# DRAW SHAPES
+#* DRAW SHAPES
 def draw_shape(shape, surface, x, y):
     formatted = shape.shape[shape.rotation % len(shape.shape)]
 
@@ -132,7 +130,7 @@ def draw_shape(shape, surface, x, y):
                     ), 0
                 )
 
-# UPCOMING SHAPES PREVIEW
+#* UPCOMING SHAPES PREVIEW
 def draw_next_shapes(next_shapes, surface):
     label = font.render('NEXT SHAPE', 1, (224, 209, 99))
     sx = TOP_LEFT_X + PLAY_WIDTH + 20
@@ -143,36 +141,36 @@ def draw_next_shapes(next_shapes, surface):
 
     surface.blit(label, (sx + 10, sy - 70))
 
-# MAIN GAME WINDOW
+#* MAIN GAME WINDOW
 def draw_window(surface, grid, score=0, last_score=0, milestone=1,hold_shape=None,):
 
-    # Whole Window
+    #? Whole Window
     surface.fill((31, 45, 86)) # Window Background
     title = pygame.font.Font(GAME_FONT, 60)
     label = title.render('TETRIS', 1, (224, 209, 99))
     surface.blit(label, (15, 15))
 
-    # Current Score
+    #? Current Score
     label = font.render('SCORE', 1, (224, 209, 99))
     score_text = font.render(str(score), 1, (255, 255, 255))
     sx = TOP_LEFT_X + PLAY_WIDTH + 50
     sy = TOP_LEFT_Y + PLAY_HEIGHT / 2 - 150
     surface.blit(label, (sx + 20, sy + 160))
     surface.blit(score_text, (sx + 62, sy + 210))
-    
-    # Hold Piece
+
+    #? Hold Piece
     label = font.render('HOLD', 1, (224, 209, 99))
     high_score = font.render(last_score, 1, (255, 255, 255))
     sx = TOP_LEFT_X - 200
     sy = TOP_LEFT_Y + PLAY_HEIGHT / 2 - 150
     surface.blit(label, (sx + 20, sy - 70))
-    
+
     if hold_shape:
         hold_piece_x = sx
         hold_piece_y = sy - 20
         draw_shape(hold_shape, surface, hold_piece_x, hold_piece_y)
 
-    # High Score
+    #? High Score
     label = font.render('HIGH SCORE', 1, (224, 209, 99))
     high_score = font.render(last_score, 1, (255, 255, 255))
     sx = TOP_LEFT_X - 200
@@ -180,7 +178,7 @@ def draw_window(surface, grid, score=0, last_score=0, milestone=1,hold_shape=Non
     surface.blit(label, (sx - 20, sy + 160))
     surface.blit(high_score, (sx + 35, sy + 210))
 
-    # Milestone / Level
+    #? Milestone / Level
     label = font.render("LEVEL", 1, (224, 209, 99))
     current_level = font.render(str(milestone), 1, (255, 255, 255))
     sx = TOP_LEFT_X - 160
@@ -188,11 +186,11 @@ def draw_window(surface, grid, score=0, last_score=0, milestone=1,hold_shape=Non
     surface.blit(label, (sx - 20, sy + 160))
     surface.blit(current_level, (sx + 20, sy + 210))
 
-    # Patterned Background
+    #? Patterned Background
     bg  = pygame.image.load("assets/images/play-area-grid.png")
     surface.blit(bg, (TOP_LEFT_X, TOP_LEFT_Y))
 
-    # Play Area Rendering
+    #? Play Area Rendering
     for i, row in enumerate(grid):
         for j, color in enumerate(row):
             if color != (0, 0, 0):
@@ -207,7 +205,8 @@ def draw_window(surface, grid, score=0, last_score=0, milestone=1,hold_shape=Non
                     ), 0
                 )
 
-    draw_grid(surface, grid) # Grid Lines
+    #? Grid Lines
+    draw_grid(surface, grid)
     pygame.draw.rect(
         surface,
         (255, 255, 255),
@@ -215,8 +214,8 @@ def draw_window(surface, grid, score=0, last_score=0, milestone=1,hold_shape=Non
         5
     ) # Play Area Outline
 
+#* Modal Screen
 def draw_modal(surface):
-    # Modal Screen
     pygame.draw.rect(surface, (0, 0, 0), (TOP_LEFT_X + 50, TOP_LEFT_Y + 200, 200, 200))
     pygame.draw.rect(surface,
         (255, 255, 255),
@@ -224,34 +223,8 @@ def draw_modal(surface):
         3
     ) # Outline
 
-    # Content and Rendering
+    #? Content and Rendering
     resume_label = font.render('RESUME', 1, (255, 255, 255))
     restart_label = font.render('RESTART', 1, (255, 255, 255))
     surface.blit(resume_label, (TOP_LEFT_X + 85, TOP_LEFT_Y + 250))
     surface.blit(restart_label, (TOP_LEFT_X + 85, TOP_LEFT_Y + 320))
-
-# Scores per Milestones
-def calculate_score(_score, milestone):
-    if milestone == 1:
-        return 10
-    elif milestone == 2:
-        return 20
-    elif milestone == 3:
-        return 30
-    elif milestone == 4:
-        return 40
-    else:
-        return 50
-
-# Fall Speed per Milestones
-def calculate_fall_speed(_score, milestone):
-    if milestone == 1:
-        return 0.35
-    elif milestone == 2:
-        return 0.3
-    elif milestone == 3:
-        return 0.2
-    elif milestone == 4:
-        return 0.1
-    else:
-        return 0.08
