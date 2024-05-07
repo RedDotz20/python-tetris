@@ -186,7 +186,6 @@ def main(win):
             current_piece = next_pieces.pop(0)  # Get the next piece from the list
             next_pieces.append(get_shape())  # Add a new piece to the end of the list
             change_piece = False
-<<<<<<< HEAD
             score += clear_rows(grid, locked_positions) * milestone_score
 
             # Update milestone, milestone score, and fall speed if necessary
@@ -206,11 +205,6 @@ def main(win):
                 milestone = 5
                 milestone_score = calculate_score(score, milestone)
                 fall_speed = calculate_fall_speed(score, milestone)
-=======
-            turn_held = False  # Reset the turn-held flag
-            hold_used = False
-            score += clear_rows(grid, locked_positions) * milestone_score
->>>>>>> 511081b54bfc4a0c6c79e66b700cc837eccaeb5e
 
             # Update milestone, milestone score, and fall speed if necessary
             if (score >= 100) and (milestone == 1):
@@ -257,10 +251,6 @@ def main(win):
                     elif event.type == pygame.QUIT:
                         pygame.quit()
                         exit()
-<<<<<<< HEAD
-
-=======
->>>>>>> 511081b54bfc4a0c6c79e66b700cc837eccaeb5e
 window = pygame.display.set_mode((S_WIDTH, S_HEIGHT))  # Window Creation
 pygame.display.set_caption("PYTHON TETRIS")  # Window Title
 main_menu(window)  # Window Opening
