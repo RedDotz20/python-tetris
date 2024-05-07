@@ -113,38 +113,29 @@ def clear_rows(grid, locked):
     place.play()
     return inc
 
-# DRAW SHAPES
-def draw_shape(shape, surface, x, y):
-    formatted = shape.shape[shape.rotation % len(shape.shape)]
-
-    for i, line in enumerate(formatted):
-        row = list(line)
-        for j, column in enumerate(row):
-            if column == '0':
-                pygame.draw.rect(
-                    surface,
-                    shape.color,
-                    (
-                        x + j * BLOCK_SIZE,
-                        y + i * BLOCK_SIZE,
-                        BLOCK_SIZE,
-                        BLOCK_SIZE
-                    ), 0
-                )
-
 # UPCOMING SHAPES PREVIEW
 def draw_next_shapes(next_shapes, surface):
     label = font.render('NEXT SHAPE', 1, (224, 209, 99))
-    sx = TOP_LEFT_X + PLAY_WIDTH + 20
-    sy = TOP_LEFT_Y + PLAY_HEIGHT / 2 - 150
+    sx = TOP_LEFT_X + PLAY_WIDTH + 30
+    sy = TOP_LEFT_Y + PLAY_HEIGHT / 2 - 100
 
     for k, shape in enumerate(next_shapes):
-        draw_shape(shape, surface, sx + k * 100, sy)
+        formatted = shape.shape[shape.rotation % len(shape.shape)]
 
+        for i, line in enumerate(formatted):
+            row = list(line)
+            for j, column in enumerate(row):
+                if column == '0':
+                    pygame.draw.rect(
+                        surface,
+                        shape.color,
+                        (sx + j * BLOCK_SIZE + k * 100, sy + i *
+                        BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE), 0
+                    )
     surface.blit(label, (sx + 10, sy - 70))
 
 # MAIN GAME WINDOW
-def draw_window(surface, grid, score=0, last_score=0, milestone=1,hold_shape=None,):
+def draw_window(surface, grid, score=0, last_score=0, milestone=1):
 
     # Whole Window
     surface.fill((31, 45, 86)) # Window Background
@@ -155,38 +146,26 @@ def draw_window(surface, grid, score=0, last_score=0, milestone=1,hold_shape=Non
     # Current Score
     label = font.render('SCORE', 1, (224, 209, 99))
     score_text = font.render(str(score), 1, (255, 255, 255))
-    sx = TOP_LEFT_X + PLAY_WIDTH + 50
-    sy = TOP_LEFT_Y + PLAY_HEIGHT / 2 - 150
+    sx = TOP_LEFT_X + PLAY_WIDTH + 30
+    sy = TOP_LEFT_Y + PLAY_HEIGHT / 2 - 100
     surface.blit(label, (sx + 20, sy + 160))
-    surface.blit(score_text, (sx + 62, sy + 210))
-    
-    # Hold Piece
-    label = font.render('HOLD', 1, (224, 209, 99))
-    high_score = font.render(last_score, 1, (255, 255, 255))
-    sx = TOP_LEFT_X - 200
-    sy = TOP_LEFT_Y + PLAY_HEIGHT / 2 - 150
-    surface.blit(label, (sx + 20, sy - 70))
-    
-    if hold_shape:
-        hold_piece_x = sx
-        hold_piece_y = sy - 20
-        draw_shape(hold_shape, surface, hold_piece_x, hold_piece_y)
+    surface.blit(score_text, (sx + 20, sy + 200))
 
     # High Score
     label = font.render('HIGH SCORE', 1, (224, 209, 99))
     high_score = font.render(last_score, 1, (255, 255, 255))
-    sx = TOP_LEFT_X - 200
-    sy = TOP_LEFT_Y + 275
-    surface.blit(label, (sx - 20, sy + 160))
-    surface.blit(high_score, (sx + 35, sy + 210))
+    sx = TOP_LEFT_X - 250
+    sy = TOP_LEFT_Y + 200
+    surface.blit(label, (sx + 20, sy + 160))
+    surface.blit(high_score, (sx + 20, sy + 220))
 
     # Milestone / Level
-    label = font.render("LEVEL", 1, (224, 209, 99))
+    label = font.render("LEVEL", 1, (255, 255, 255))
     current_level = font.render(str(milestone), 1, (255, 255, 255))
-    sx = TOP_LEFT_X - 160
-    sy = TOP_LEFT_Y + 150
-    surface.blit(label, (sx - 20, sy + 160))
-    surface.blit(current_level, (sx + 20, sy + 210))
+    sx = TOP_LEFT_X - 250
+    sy = TOP_LEFT_Y + 50
+    surface.blit(label, (sx + 20, sy + 160))
+    surface.blit(current_level, (sx + 20, sy + 220))
 
     # Patterned Background
     bg  = pygame.image.load("assets/images/play-area-grid.png")
@@ -246,11 +225,11 @@ def calculate_score(_score, milestone):
 # Fall Speed per Milestones
 def calculate_fall_speed(_score, milestone):
     if milestone == 1:
-        return 0.35
-    elif milestone == 2:
-        return 0.3
-    elif milestone == 3:
         return 0.2
+    elif milestone == 2:
+        return 0.18
+    elif milestone == 3:
+        return 0.12
     elif milestone == 4:
         return 0.1
     else:
