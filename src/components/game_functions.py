@@ -141,6 +141,9 @@ def draw_next_shapes(next_shapes, surface):
 
     surface.blit(label, (sx + 10, sy - 70))
 
+
+
+
 #* MAIN GAME WINDOW
 def draw_window(surface, grid, score=0, last_score=0, milestone=1,hold_shape=None,):
 

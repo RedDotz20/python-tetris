@@ -24,6 +24,27 @@ from src.constants.global_variables import (
     TOP_LEFT_Y,
 )
 
+hold_piece = None
+hold_used_flag = False
+hold_instance = 0
+
+def handle_hold(current_piece, next_pieces, hold_piece, hold_used_flag, hold_instance):
+
+    if not hold_used_flag and hold_instance == 0:
+        hold_piece = current_piece
+        current_piece = next_pieces.pop(0)
+        current_piece.y = 0
+        next_pieces.append(get_shape()) 
+        hold_used_flag = True
+
+    elif not hold_used_flag and hold_instance >= 1:
+        temp_piece = hold_piece
+        temp_piece.y = 0
+        hold_piece = current_piece
+        current_piece = temp_piece
+        hold_used_flag = True
+
+    return current_piece, next_pieces, hold_piece, hold_used_flag
 
 def main(win):
     last_score = max_score()
@@ -39,7 +60,8 @@ def main(win):
     modal_open = False
     hold_used = False
     turn_held = False
-
+    hold_used_flag = False
+    hold_instance = 0
     milestone = 1  # Start at milestone 1
     last_speed_update_score = 0
     clock = pygame.time.Clock()
@@ -138,34 +160,11 @@ def main(win):
                         change_piece = True
                     if is_toggle_restart:
                         main_menu(win)
-                    if event.key == pygame.K_LCTRL and not (pause or hold_used or turn_held):
-                        if hold_piece is None:
-                            hold_piece = current_piece
-                            current_piece = next_pieces.pop(0)
-                            next_pieces.append(get_shape())
-                            current_piece.x = 4
-                            current_piece.y = 0
-                        else:
-                            current_piece, hold_piece = hold_piece, current_piece
-                            current_piece.x = 4
-                            current_piece.y = 0
-                            turn_held = True
-                            hold_used = True
-                    if event.key == pygame.K_LSHIFT and not pause and not turn_held:
-                        if not hold_piece:
-                            hold_piece = current_piece
-                            current_piece = next_pieces.pop(0)
-                            next_pieces.append(get_shape())
-                        else:
-                            temp_piece = hold_piece
-                            hold_piece = current_piece
-                            hold_piece.x = 6
-                            hold_piece.y = 2
-                            current_piece = temp_piece
-                            current_piece.x = 6
-                            current_piece.y = 2
-                            if not valid_space(current_piece, grid):
-                                run = False
+
+                    if event.key == pygame.K_LSHIFT and not (pause or hold_used or turn_held):
+                        current_piece, next_pieces, hold_piece, hold_used_flag = handle_hold(current_piece, next_pieces, hold_piece, hold_used_flag, hold_instance)
+                        hold_instance += 1
+
             if event.type == pygame.MOUSEBUTTONDOWN and modal_open:
                 mouse_x, mouse_y = pygame.mouse.get_pos()
                 if TOP_LEFT_X + 50 < mouse_x < TOP_LEFT_X + 250:
@@ -190,7 +189,7 @@ def main(win):
             next_pieces.append(get_shape())  # Add a new piece to the end of the list
             change_piece = False
             turn_held = False  # Reset the turn-held flag
-            hold_used = False
+            hold_used_flag = False
             score += clear_rows(grid, locked_positions) * milestone_score
 
         draw_window(win, grid, score, last_score, milestone, hold_piece)
