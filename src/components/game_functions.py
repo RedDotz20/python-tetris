@@ -141,6 +141,21 @@ def draw_next_shapes(next_shapes, surface):
 
     surface.blit(label, (sx + 10, sy - 70))
 
+
+def handle_hold(get_random_piece):
+    global hold_piece, hold_used_flag
+    
+    # Check if the hold piece has not been used yet
+    if not hold_used_flag:
+        # Store the current piece as the hold piece
+        hold_piece = current_piece
+        
+        # Get a new random piece as the current piece
+        current_piece = get_random_piece()
+        
+        # Update the hold used flag to prevent multiple uses
+        hold_used_flag = True
+
 #* MAIN GAME WINDOW
 def draw_window(surface, grid, score=0, last_score=0, milestone=1,hold_shape=None,):
 
