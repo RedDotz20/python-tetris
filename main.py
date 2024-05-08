@@ -27,13 +27,13 @@ from src.constants.global_variables import (
 hold_piece = None
 hold_used_flag = False
 
-def handle_hold(current_piece, hold_used_flag, next_pieces, hold_piece,):
+def handle_hold(current_piece, next_pieces, hold_piece, hold_used_flag):
     if not hold_used_flag:
         hold_piece = current_piece
         current_piece = next_pieces.pop(0)
         next_pieces.append(get_shape())
         hold_used_flag = True
-    return current_piece, hold_used_flag, next_pieces, hold_piece
+    return current_piece, next_pieces, hold_piece, hold_used_flag
 
 def main(win):
     last_score = max_score()
@@ -148,8 +148,8 @@ def main(win):
                         change_piece = True
                     if is_toggle_restart:
                         main_menu(win)
-                    if event.key == pygame.K_LSHIFT and not pause and not turn_held:
-                        current_piece, hold_used_flag, next_pieces, hold_piece,  = handle_hold(current_piece, hold_used_flag,next_pieces, hold_piece,)
+                    if event.key == pygame.K_LSHIFT and not (pause or hold_used or turn_held):
+                        current_piece, next_pieces, hold_piece, hold_used_flag = handle_hold(current_piece, next_pieces, hold_piece, hold_used_flag)
             if event.type == pygame.MOUSEBUTTONDOWN and modal_open:
                 mouse_x, mouse_y = pygame.mouse.get_pos()
                 if TOP_LEFT_X + 50 < mouse_x < TOP_LEFT_X + 250:
