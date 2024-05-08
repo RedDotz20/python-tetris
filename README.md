@@ -24,7 +24,7 @@ A Tetris game built with Python programming language alongside with `PyGame` lib
 - [x] `Scoring System`: Points are typically awarded for each line cleared, with more points given for clearing multiple lines simultaneously (known as a "Tetris"). The scoring system may also reward players for the speed at which they clear lines or for achieving certain milestones.
 - [x] `Speed Increase`: As players progress through the game, the falling speed of the tetrominoes typically increases, making the game more challenging over time.
 - [x] `Level Progression`: Tetris often features a level system where players advance to higher levels as they clear more lines. Advancing levels may bring increased speed or other changes to the gameplay.
-- [ ] `Hold Piece`: Some versions of Tetris allow players to temporarily hold a tetromino, to be used strategically later.
+- [x] `Hold Piece`: Some versions of Tetris allow players to temporarily hold a tetromino, to be used strategically later.
 - [x] `Next Piece Preview`: Many Tetris games offer a preview of the next tetromino that will appear, allowing players to plan their moves in advance.
 
 ## 💡 Prerequisites
@@ -71,6 +71,8 @@ If you're open to contributions from others, outline guidelines for contributing
 ## 👨‍💻 Authors
 
 - [@carlos-tabangay | reddotz20](https://github.com/RedDotz20)
+- [@andre-santelices | andresntics](https://github.com/andresntlcs)
+- [@paul-rogayan | popoyisded](https://github.com/popoyisded)
 - [@sam-velasco | zestomilk2002](https://github.com/ZestoMilk2002)
 
 ## 📃 License
